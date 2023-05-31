@@ -28,32 +28,32 @@ import gpt_annotate
 2. Read in your codebook (i.e., task-specific instructions) and the text samples you want to annotate.
 
 ```
-	text_to_annotate = pd.read_csv("text_to_classify.csv")
-	with open('codebook.txt', 'r') as file:
-    		codebook = file.read()
+text_to_annotate = pd.read_csv("text_to_classify.csv")
+with open('codebook.txt', 'r') as file:
+	codebook = file.read()
  ```
     
 3. To ensure your data is in the right format, you must first run gpt_annotate.prepare_data(text_to_annotate, codebook, key). If you are annotating text data without any human labels to compare against, change the default to human_labels = False. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to prep_codebook = True.
 ```
-	text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)
+text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)
 ```
 4. If comparing LLM output to human labels, run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key). If only using gpt_annotate for prediction (i.e., no human labels to compare performance), run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False). It’s as easy as that!
 ```
-	# Annotate the data (returns 4 outputs)
-	gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)
+# Annotate the data (returns 4 outputs)
+gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)
 ```
 
 Below we define the alternative parameters within `gpt_annotate()` to customize your annotation procedures.
 * num_iterations:
 	* Number of times to classify each text sample. Default is 3.
 * model:
-	* OpenAI GPT model, which is either gpt-3.5-turbo or gpt-4. Default is gpt-4.
+	* OpenAI GPT model, which is either `gpt-3.5-turbo` or `gpt-4`. Default is `gpt-4`.
 * temperature: 
 	* LLM temperature parameter (ranges 0 to 1), which indicates the degree of diversity to introduce into the model. Default is 0.6.
 * batch_size:
 	* Number of text samples to be annotated in each batch. Default is 10.
 * human_labels: 
-	* Boolean indicating whether text_to_annotate has human labels to compare LLM outputs to. 
+	* Boolean indicating whether `text_to_annotate` has human labels to compare LLM outputs to. 
 * data_prep_warning: 
 	* Boolean indicating whether to print data_prep_warning
 * time_cost_warning: 
