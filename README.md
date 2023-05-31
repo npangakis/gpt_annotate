@@ -12,7 +12,9 @@ To annotate your text data using gpt_annotate, we recommend following the sample
 
 As shown in `sample_annotation_code.ipynb`, annotating your text data with LLMs is as easy as 4 simple steps:
 1. Import the required dependencies (including gpt_annotate.py).
-`import openai
+
+```
+import openai
 import pandas as pd
 import math
 import time
@@ -20,19 +22,28 @@ import numpy as np
 import tiktoken
 #### Import main package: gpt_annotate.py
 # Make sure that the .py file is in the same directory as the .ipynb file, or you provide the correct relative or absolute path to the .py file.
-import gpt_annotate`
-2. Read in your codebook (i.e., task-specific instructions) and the text samples you want to annotate.
-`text_to_annotate = pd.read_csv("text_to_classify.csv")
-with open('codebook.txt', 'r') as file:
-    codebook = file.read()`
-3. To ensure your data is in the right format, you must first run gpt_annotate.prepare_data(text_to_annotate, codebook, key). If you are annotating text data without any human labels to compare against, change the default to human_labels = False. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to prep_codebook = True.
-`# Prepare the data for annotation
-text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)`
-4. If comparing LLM output to human labels, run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key). If only using gpt_annotate for prediction (i.e., no human labels to compare performance), run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False). It’s as easy as that!
-`# Annotate the data (returns 4 outputs)
-gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)`
+import gpt_annotate
+```
 
-Below we define the alternative parameters within gpt_annotate() to customize your annotation procedures.
+2. Read in your codebook (i.e., task-specific instructions) and the text samples you want to annotate.
+
+```
+	text_to_annotate = pd.read_csv("text_to_classify.csv")
+	with open('codebook.txt', 'r') as file:
+    		codebook = file.read()
+ ```
+    
+3. To ensure your data is in the right format, you must first run gpt_annotate.prepare_data(text_to_annotate, codebook, key). If you are annotating text data without any human labels to compare against, change the default to human_labels = False. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to prep_codebook = True.
+```
+	text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)
+```
+4. If comparing LLM output to human labels, run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key). If only using gpt_annotate for prediction (i.e., no human labels to compare performance), run gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False). It’s as easy as that!
+```
+	# Annotate the data (returns 4 outputs)
+	gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)
+```
+
+Below we define the alternative parameters within `gpt_annotate()` to customize your annotation procedures.
 * num_iterations:
 	* Number of times to classify each text sample. Default is 3.
 * model:
