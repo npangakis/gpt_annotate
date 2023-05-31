@@ -1,8 +1,7 @@
-# gpt_annotate
-Introducing gpt_annotate: an easy-to-use python package designed to streamline automated text annotation using LLMs for different tasks and datasets. 
-
-All you need is an OpenAI API key, text samples you want to annotate, and a codebook (i.e., task-specific instructions) for the LLM.
-* OpenAI API key (sign up for one here: https://platform.openai.com/account/api-keys)
+# Introducing gpt_annotate
+An easy-to-use python package designed to streamline automated text annotation using LLMs for different tasks and datasets. All you need is an OpenAI API key, text samples you want to annotate, and a codebook (i.e., task-specific instructions) for the LLM.
+* OpenAI API key 
+	* Sign up for one here: https://platform.openai.com/account/api-keys
 * text_to_annotate: 
 	* A dataframe that includes one column for text samples and, if you are comparing the LLM output against humans, any number of one-hot-encoded category columns. We provide Python code (described below) that will automatically assist with the formatting of text_to_annotate to ensure accurate annotation.
 * codebook: 
