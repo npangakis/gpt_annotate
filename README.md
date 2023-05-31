@@ -32,11 +32,11 @@ with open('codebook.txt', 'r') as file:
 	codebook = file.read()
  ```
     
-3. To ensure your data is in the right format, you must first run `gpt_annotate.prepare_data(text_to_annotate, codebook, key)`. If you are annotating text data without any human labels to compare against, change the default to `human_labels = False`. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to prep_codebook = True.
+3. To ensure your data is in the right format, you must first run `gpt_annotate.prepare_data(text_to_annotate, codebook, key)`. If you are annotating text data without any human labels to compare against, change the default to `human_labels = False`. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to `prep_codebook = True`.
 ```
 text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)
 ```
-4. If comparing LLM output to human labels, run `gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)`. If only using gpt_annotate for prediction (i.e., no human labels to compare performance), run `gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False)`. It’s as easy as that!
+4. If comparing LLM output to human labels, run `gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)`. If only using `gpt_annotate` for prediction (i.e., no human labels to compare performance), run `gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False)`. It’s as easy as that!
 ```
 # Annotate the data (returns 4 outputs)
 gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key)
