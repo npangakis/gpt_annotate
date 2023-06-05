@@ -46,13 +46,13 @@ gpt_out_all, gpt_out_final =  gpt_annotate.gpt_annotate(text_to_annotate, codebo
 ```
 
 Outputs:
-*   1) `gpt_out_all`
+1) `gpt_out_all`
   *   Raw outputs for every iteration.
-*   2) `gpt_out_final`
+2) `gpt_out_final`
   *   Annotation outputs after taking modal category answer and calculating consistency scores.
-*   3) `performance`
+3) `performance`
   *   Accuracy, precision, recall, and f1.
-*   4) `incorrect`
+4) `incorrect`
   *   Any incorrect classification or classification with less than 1.0 consistency.
 
 Below we define the alternative parameters within `gpt_annotate()` to customize your annotation procedures.
