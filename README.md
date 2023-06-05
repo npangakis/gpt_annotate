@@ -45,6 +45,16 @@ gpt_out_all, gpt_out_final, performance, incorrect =  gpt_annotate.gpt_annotate(
 gpt_out_all, gpt_out_final =  gpt_annotate.gpt_annotate(text_to_annotate, codebook, key, human_labels = False)
 ```
 
+Outputs:
+*   1) `gpt_out_all`
+  *   Raw outputs for every iteration.
+*   2) `gpt_out_final`
+  *   Annotation outputs after taking modal category answer and calculating consistency scores.
+*   3) `performance`
+  *   Accuracy, precision, recall, and f1.
+*   4) `incorrect`
+  *   Any incorrect classification or classification with less than 1.0 consistency.
+
 Below we define the alternative parameters within `gpt_annotate()` to customize your annotation procedures.
 * num_iterations:
 	* Number of times to classify each text sample. Default is 3.
