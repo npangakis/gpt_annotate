@@ -3,10 +3,10 @@ An easy-to-use Python package designed to streamline automated text annotation u
 * OpenAI API key 
 	* Sign up for one here: https://platform.openai.com/account/api-keys
 * text_to_annotate: 
-	* A dataframe that includes one column for text samples and, if you are comparing the LLM output against humans, any number of one-hot-encoded category columns. We provide Python code (described below) that will automatically assist with the formatting of text_to_annotate to ensure accurate annotation.
+	* A dataframe that includes one column for text samples and, if you are comparing the LLM output against humans, any number of one-hot-encoded category columns. The text column should be the first column in your data. We provide Python code (described below) that will automatically assist with the formatting of `text_to_annotate` to ensure accurate annotation.
 * codebook: 
 	* Task-specific instructions (as type string) to prompt the LLM to annotate the data. Like codebooks for qualitative content analysis, this should clearly describe the dataset, the type of task for the LLM, and, most importantly, delineate the categories of interest for the LLM to annotate. We provide Python code to standardize the beginning and ending of the codebook to ensure that the LLM understands that the task is annotation.
-	* For example, the text of codebook.txt could be: "You will be classifying text samples. Each text sample is a tweet. Classify each tweet on two dimensions: a) POLITICAL; b) PRESIDENT. For POLITICAL, label as 1 if the tweet is about politics; label as 0 if not. For PRESIDENT, label as 1 if the tweet refers to a past or present president, a candidate for president, or a presidential election; label as 0 if not. Classify the following text samples:"
+	* For example, the text of `codebook` could be: "You will be classifying text samples. Each text sample is a tweet. Classify each tweet on two dimensions: a) POLITICAL; b) PRESIDENT. For POLITICAL, label as 1 if the tweet is about politics; label as 0 if not. For PRESIDENT, label as 1 if the tweet refers to a past or present president, a candidate for president, or a presidential election; label as 0 if not. Classify the following text samples:"
 
 To annotate your text data using gpt_annotate, we recommend following the sample code we provide in `sample_annotation_code.ipynb`.
 
@@ -28,12 +28,12 @@ import gpt_annotate
 2. Read in your codebook (i.e., task-specific instructions) and the text samples you want to annotate.
 
 ```
-text_to_annotate = pd.read_csv("text_to_classify.csv")
+text_to_annotate = pd.read_csv("text_to_annotate.csv")
 with open('codebook.txt', 'r') as file:
 	codebook = file.read()
  ```
     
-3. To ensure your data is in the right format, you must first run `gpt_annotate.prepare_data(text_to_annotate, codebook, key)`. If you are annotating text data without any human labels to compare against, change the default to `human_labels = False`. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to prep_codebook = True.
+3. To ensure your data is in the right format, you must first run `gpt_annotate.prepare_data(text_to_annotate, codebook, key)`. If you are annotating text data without any human labels to compare against, change the default to `human_labels = False`. If you want to add standardized language to the beginning and end of your codebook to ensure that GPT will label your text samples, change the default to `prep_codebook = True`.
 ```
 text_to_annotate = gpt_annotate.prepare_data(text_to_annotate, codebook, key)
 ```
