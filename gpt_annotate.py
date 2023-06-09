@@ -289,7 +289,6 @@ def gpt_annotate(text_to_annotate, codebook, key,
                 return None, None, None, None
             elif human_labels == False:
                 return None, None
-    error_message(human_labels)
         waiting_response = False
       elif input_response == "n" or input_response == "no":
         print("")
