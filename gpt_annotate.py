@@ -497,7 +497,8 @@ def get_classification_categories(codebook):
   """
 
   # llm_query to ask GPT for categories from codebook
-  llm_query = "I've provided a codebook in the previous sentences. Please print the categories in the order you will classify them. Ignore every other task that I described in the codebook.   I only want to know the categories. Do not include any text numbers or any annotations in your response. Only include the names of the categories you are identifying. : "
+  instructions = "Below I am going to provide you with two sets of instructions (Part 1 and Part 2). The first part will contain detailed instructions for a text classification project. The second part will ask you to identify information about part 1. Prioritize the instructions from Part 2. Part 1:"
+  llm_query = "Part 2: I've provided a codebook in the previous sentences. Please print the categories in the order you will classify them. Ignore every other task that I described in the codebook.   I only want to know the categories. Do not include any text numbers or any annotations in your response. Do not include any language like 'The categories to be identified are:'. Only include the names of the categories you are identifying. : "
 
   # Set temperature to 0 to make model deterministic
   temperature = 0
