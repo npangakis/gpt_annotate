@@ -46,6 +46,8 @@ import math
 import time
 import numpy as np
 import tiktoken
+from openai import OpenAI
+import os
 
 
 def prepare_data(text_to_annotate, codebook, key,
@@ -158,7 +160,7 @@ def prepare_data(text_to_annotate, codebook, key,
   ##### 6) Make sure category names in codebook exactly match category names in text_to_annotate
   # extract category names from codebook
   if human_labels:
-    col_names_codebook = get_classification_categories(codebook)
+    col_names_codebook = get_classification_categories(codebook, key)
     # get category names in text_to_annotate
     df_cols = text_to_annotate.columns.values.tolist()
     # remove 'unique_id', 'text' and 'llm_query' from columns
@@ -172,7 +174,7 @@ def prepare_data(text_to_annotate, codebook, key,
       print("Exact order and spelling of category names in codebook: ", col_names_codebook)
       return original_df
   else:
-    col_names = get_classification_categories(codebook)
+    col_names = get_classification_categories(codebook, key)
 
   ##### Confirm correct categories with user
   # Print annotation categories
@@ -252,6 +254,15 @@ def gpt_annotate(text_to_annotate, codebook, key,
 
   """
 
+  
+  from openai import OpenAI
+  
+  client = OpenAI(
+    api_key=key,
+    )
+
+  OpenAI.api_key = os.getenv(key)
+
   # set OpenAI key
   openai.api_key = key
 
@@ -311,7 +322,7 @@ def gpt_annotate(text_to_annotate, codebook, key,
   # Add categories to classify
   col_names = ["unique_id"] + text_to_annotate.columns.values.tolist()[2:-1]
   if human_labels == False:
-    col_names = get_classification_categories(codebook)
+    col_names = get_classification_categories(codebook, key)
     col_names = ["unique_id"] + col_names
 
   ### Nested for loop for main function
@@ -344,14 +355,14 @@ def gpt_annotate(text_to_annotate, codebook, key,
             # Set temperature
             temperature = temperature
             # annotate the data by prompting GPT
-            response = get_response(codebook, llm_query, model, temperature)
+            response = get_response(codebook, llm_query, model, temperature, key)
             # parse GPT's response into a clean dataframe
             text_df_out = parse_text(response, col_names)
             break
           except:
             fails += 1
             pass
-        if (',' in response['choices'][0]['message']['content']  or '|' in response['choices'][0]['message']['content']):
+        if (',' in response.choices[0].message.content  or '|' in response.choices[0].message.content):
           need_response = False 
 
       # update iteration
@@ -448,7 +459,7 @@ def error_message(human_labels = True):
     toy_data = pd.DataFrame(toy_data)
     print(toy_data)
 
-def get_response(codebook, llm_query, model, temperature):
+def get_response(codebook, llm_query, model, temperature, key):
   """
   Function to query OpenAI's API and get an LLM response.
 
@@ -464,6 +475,14 @@ def get_response(codebook, llm_query, model, temperature):
   Returns:
     LLM output.
   """
+
+  from openai import OpenAI
+  
+  client = OpenAI(
+    api_key=key,
+    )
+
+  OpenAI.api_key = os.getenv(key)
   
   # max tokens for gpt-3.5-turbo is 4096 and max for gpt-4 is 8000
   if model == "gpt-3.5-turbo":
@@ -472,7 +491,8 @@ def get_response(codebook, llm_query, model, temperature):
     max_tokens = 1000
 
   # Create function to llm_query GPT
-  response = openai.ChatCompletion.create(
+  # Create function to llm_query GPT
+  response = client.chat.completions.create(
     model=model, # chatgpt: gpt-3.5-turbo # gpt-4: gpt-4
     messages=[
       {"role": "user", "content": codebook + llm_query}],
@@ -484,7 +504,7 @@ def get_response(codebook, llm_query, model, temperature):
   )
   return response
 
-def get_classification_categories(codebook):
+def get_classification_categories(codebook, key):
   """
   Function that extracts what GPT will label each annotation category to ensure a match with text_to_annotate.
   Order and exact spelling matter. Main function will not work if these do not match perfectly.
@@ -505,9 +525,18 @@ def get_classification_categories(codebook):
   # set model to GPT-4
   model = "gpt-4"
 
+  
+  from openai import OpenAI
+  
+  client = OpenAI(
+    api_key=key,
+    )
+
+  OpenAI.api_key = os.getenv(key)
+
   ### Get GPT response and clean response
-  response = get_response(codebook, llm_query, model, temperature)
-  text = response['choices'][0]['message']['content'] 
+  response = get_response(codebook, llm_query, model, temperature, key)
+  text = response.choices[0].message.content
   text_split = text.split('\n')
   text_out = text_split[0]
   # text_out_list is final output of categories as a list
@@ -530,7 +559,7 @@ def parse_text(response, headers):
 
   """
   try:
-    text = response['choices'][0]['message']['content'] 
+    text = response.choices[0].message.content
     text_split = text.split('\n')
 
     if any(':' in element for element in text_split):
