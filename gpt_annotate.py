@@ -653,6 +653,7 @@ def get_mode_and_consistency(df, col_names, num_iterations, human_labels):
   else:
     first_two_columns = df_new.iloc[:, 0:2]
     df_new = pd.DataFrame(first_two_columns)
+    df_new = df_new.reset_index()
 
   # combine into final df
   out = pd.concat([df_new, df_combined], axis=1)
