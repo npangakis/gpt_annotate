@@ -72,4 +72,4 @@ Below we define the alternative parameters within `gpt_annotate()` to customize 
 	* Boolean indicating whether to print time_cost_warning
 
 
-Please email us (njpang@sas.upenn.edu) with any suggestions or problems encountered with the code.
+Please email us (njpang@sas.upenn.edu, sam.wolken@asc.upenn.edu) with any suggestions or problems encountered with the code.
